@@ -11,7 +11,15 @@ block-offset: -0.5, -1, -0.5
 
 # How should the timer between phases be formatted?
 # This section can support multiple lines.
-timer-format: '&6{0}'
+# Placeholders:
+#   {0} - total seconds remaining (e.g. 216)
+#   {d} - days component
+#   {h} - hours component (0-23)
+#   {m} - minutes component, zero-padded (00-59)
+#   {s} - seconds component, zero-padded (00-59)
+# Example: '&6{d}d {h}h {m}m {s}s' -> '0d 0h 03m 36s'
+# Example: '&6{h}:{m}:{s}' -> '0:03:36'
+timer-format: '&6{h}:{m}:{s}'
 
 # Set the hierarchy of the phases
 phases:

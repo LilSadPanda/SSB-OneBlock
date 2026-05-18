@@ -269,6 +269,18 @@ public final class OneBlockModule extends PluginModule {
             return phaseData.getName();
         });
 
+        placeholdersService.registerPlaceholder("oneblock_cooldown", (island, superiorPlayer) -> {
+            if (island == null)
+                return null;
+
+            NextPhaseTimer timer = NextPhaseTimer.getTimer(island);
+
+            if (timer == null)
+                return "0";
+
+            return String.valueOf(timer.getTime());
+        });
+
     }
 
 }

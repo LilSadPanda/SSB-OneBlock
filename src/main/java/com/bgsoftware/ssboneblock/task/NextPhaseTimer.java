@@ -41,7 +41,7 @@ public final class NextPhaseTimer extends BukkitRunnable {
         for (String name : module.getSettings().timerFormat) {
             Hologram hologram = createHologram(oneBlockLocation, this.holograms.size());
             if (hologram != null) {
-                hologram.setHologramName(name.replace("{0}", time + ""));
+                hologram.setHologramName(formatTime(name, time));
                 this.holograms.add(hologram);
             }
         }
@@ -80,7 +80,7 @@ public final class NextPhaseTimer extends BukkitRunnable {
             }
 
             String name = module.getSettings().timerFormat.get(hologramCounter);
-            hologram.setHologramName(name.replace("{0}", time + ""));
+            hologram.setHologramName(formatTime(name, time));
 
             ++hologramCounter;
         }
@@ -99,6 +99,10 @@ public final class NextPhaseTimer extends BukkitRunnable {
         super.cancel();
     }
 
+    public short getTime() {
+        return time;
+    }
+
     public static NextPhaseTimer getTimer(Island island) {
         return timers.get(island.getUniqueId());
     }
@@ -110,6 +114,19 @@ public final class NextPhaseTimer extends BukkitRunnable {
     private static Hologram createHologram(Location firstLocation, int index) {
         Location hologramLocation = firstLocation.clone().add(0.5, 2 + (index * 0.3), 0.5);
         return HologramFactory.createHologram(hologramLocation);
+    }
+
+    public static String formatTime(String format, int totalSeconds) {
+        int days = totalSeconds / 86400;
+        int hours = (totalSeconds % 86400) / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+        return format
+                .replace("{0}", String.valueOf(totalSeconds))
+                .replace("{d}", String.valueOf(days))
+                .replace("{h}", String.valueOf(hours))
+                .replace("{m}", String.format("%02d", minutes))
+                .replace("{s}", String.format("%02d", seconds));
     }
 
 }
